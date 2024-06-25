@@ -10,20 +10,26 @@ export class DatabaseSql {
     async create(aluno) {
         const alunoId = randomUUID()
 
-        const { nome, idade, matriculado, time } = aluno
+        const { nome, idade, matriculado, time} = aluno
 
-        await db.query`insert into alunos (id, name, age, registered, team) values
-            (${alunoId}, ${nome}, ${idade}, ${matriculado}, ${time})`
+        await db.query`insert into alunos values (
+            ${alunoId}, ${nome}, ${idade}, ${matriculado}, ${time}
+        )`
     }
 
     async update(id, aluno) {
-        const { nome, idade, matriculado, time } = aluno
+        const { nome, idade, matriculado, time} = aluno
 
-        await db.query`update alunos set name = ${nome}, age = ${idade}, registered = ${matriculado}, team = ${time}`
+        console.log(`update alunos
+        set name = '${nome}', age = ${idade}, registered = ${Number(matriculado)}, team = '${time}'
+        where id = '${id}'`)
+
+        await db.query`update alunos
+            set name = '${nome}', age = ${idade}, registered = ${Number(matriculado)}, team = '${time}'
+            where id = '${id}'`
     }
 
     async delete(id) {
-        console.log(`delete from alunos where id = '${id}'`)
-        await db.query`delete from alunos where id = '${id}'`
+        await db.query`delete from alunos where id = ${id}`
     }
 }
